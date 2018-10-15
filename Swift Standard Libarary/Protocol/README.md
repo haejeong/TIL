@@ -45,4 +45,20 @@ if freeOptions.contains(.priority) {
 }
 ```
 
+UIControlState 도 OptionSet 이구나 !! 
+```swift
+public struct UIControlState : OptionSet {
+    public init(rawValue: UInt)
+    
+    public static var normal: UIControlState { get }
+    public static var highlighted: UIControlState { get }
+    public static var disabled: UIControlState { get }
+    public static var selected: UIControlState { get }
+    @available(iOS 9.0, *)
+    public static var focused: UIControlState { get }
+    public static var application: UIControlState { get }
+    public static var reserved: UIControlState { get }
+}
+``` 
+
 
