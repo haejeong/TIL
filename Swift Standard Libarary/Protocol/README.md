@@ -29,20 +29,20 @@ let multipleOptions: ShippingOptions = [.nextDay, .secondDay, .priority]
 해당 OptionSet 의 값을 추가할 때에 append/insert, 제거할 때 remove, 포함되어 있는지 확인할 때에 contains 를 사용한다.
 
 ```swift 
-	freeOptions.insert(.express)
-	freeOptions.append(.express)
+freeOptions.insert(.express)
+freeOptions.append(.express)
 ```
 
 ```swift
-	freeOptions.remove(.express)
+freeOptions.remove(.express)
 ```	
 
 ```swift
-	if freeOptions.contains(.priority) {
-   	 	print("You've earned free priority shipping!")
-	} else {
-   		print("Add more to your cart for free priority shipping!")
-	}
+if freeOptions.contains(.priority) {
+	print("You've earned free priority shipping!")
+} else {
+	print("Add more to your cart for free priority shipping!")
+}
 ```
 
 
