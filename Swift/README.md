@@ -1,6 +1,6 @@
-#Swift
+# Swift
 
-##Overflow Operators
+## Overflow Operators
 >Xcode 10.0+ 부터 가능한 Overflow Operators
 
 Overflow Operator 는 너무 크거나, 너무 작은 숫자를 안전하게 연산할 수 있도록 해준다.
@@ -19,7 +19,7 @@ static func &- (Int, Int) -> Int
 static func &* (Int, Int) -> Int
 ```
 
-###Value Overflow
+### Value Overflow
 ```swift
 var unsignedOverflow = UInt8.max
 // unsignedOverflow equals 255, which is the maximum value a UInt8 can hold
