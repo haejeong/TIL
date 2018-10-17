@@ -1,10 +1,25 @@
 # Protocol
 
+## RandomAccessCollection
+
+>A collection that supports efficient random-access index traversal.
+
+```swift
+protocol RandomAccessCollection where Self.Indices : RandomAccessCollection, Self.SubSequence : RandomAccessCollection
+```
+
+Random-access collections 은 O(1) 시간 내에서 원하는 거리만큼 인덱스를 이동할 수 있으며 인덱스 간의 거리를 측정할 수 있다. 
+
+Generic Structure 인 Dictionary 내에서 제공하는 randomElement 를 살펴보자. 
+
+func randomElement() -> (key: Key, value: Value)?
+
+
 ## OptionSet
 
 >A type that presents a mathematical set interface to a bit set.
 
-OptionSet 프로토콜은 bitset 타입을 표현할 때 사용한다. 
+OptionSet 프로토콜은 bitset 타입을 표현할 때 사용한다.  
 rawValue 로는 Int 나 UInt 같은 FiextedWidthInteger 프로토콜을 준수하는 유형을 사용
 
 ```swift
