@@ -40,7 +40,20 @@ let allHaveAtLeastFive = names.allSatisfy({ $0.count >= 5 })
 ```
 위와 같이 Dictionary `names` 에 있는 모든 문자열 길이가 5이상이므로 true 를 리턴한다. 
 
-### 
+### DictionaryLiteral
+> A lightweight collection of key-value pairs.
+
+`DictionaryLiteral`는 키 조회가 빠를 필요없지만, 순서가 지정된 key-value 형태의 collection 를 사용하고 싶을 때 사용한다.  
+
+```swift
+let recordTimes: DictionaryLiteral = ["Florence Griffith-Joyner": 10.49,
+                                      "Evelyn Ashford": 10.76,
+                                      "Evelyn Ashford": 10.79,
+                                      "Marlies Gohr": 10.81]
+```
+
+`DictionaryLiteral`는 순서가 유지되는 것뿐만이 아니라 중복 키도 허용된다.  
+위의 예제에서 `Evelyn Ashford`라는 키가 두번이 들어간 것을 확인 할 수 있다. 
 
 
 ## Overflow Operators
