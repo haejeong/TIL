@@ -112,3 +112,67 @@ Int8가 가질 수 있는 최소 값은 -128 또는 10000000이다.
 만약 `&-`를 이용하여 1을 감소시키면 Int8의 최대값인 01111111 또는 127이 된다.
 
 ![Alt text](overflowSignedSubtraction_2x.png "Optional title")
+
+
+## Articles
+
+### Conform Automatically to Equatable and Hashable
+
+`Equatable`와 `Hashable` 프로토콜을 선언하여 여러가지 유형으로 equatable & hashable 을 구현할 수 있다. 
+
+```swift 
+struct Position: Equatable, Hashable {
+    var x: Int
+    var y: Int
+    
+    init(_ x: Int, _ y: Int) {
+        self.x = x
+        self.y = y
+    }
+}
+```
+위와 같이 Equatable, Hashable 프로토콜을 선언해주면,  
+아래와 같이 `==`와 `contains`를 사용할 수 있게된다. 
+
+```swift
+let availablePositions = [Position(0, 0), Position(0, 1), Position(1, 0)]
+let gemPosition = Position(1, 0)
+
+for position in availablePositions {
+    if gemPosition == position {
+        print("Gem found at (\(position.x), \(position.y))!")
+    } else {
+        print("No gem at (\(position.x), \(position.y))")
+    }
+}
+// No gem at (0, 0)
+// No gem at (0, 1)
+// Gem found at (1, 0)!
+
+var visitedPositions: Set = [Position(0, 0), Position(1, 0)]
+let currentPosition = Position(1, 3)
+
+if visitedPositions.contains(currentPosition) {
+    print("Already visited (\(currentPosition.x), \(currentPosition.y))")
+} else {
+    print("First time at (\(currentPosition.x), \(currentPosition.y))")
+    visitedPositions.insert(currentPosition)
+}
+// First time at (1, 3)
+```
+
+나는 아래와 같이 주소록정보에서 `==`의 정의를 아래와 같이 해주었다. 
+
+```swift
+extension AddressInfoModel: Equatable {
+    public static func == (lhs: AddressInfoModel, rhs: AddressInfoModel) -> Bool {
+        return lhs.name == rhs.name && lhs.addr == rhs.addr
+    }
+}
+```
+
+Equatable and Hashable 프로토콜을 사용하기 위해서는 .. 
+
+*  구조체에서는 모든 프로퍼티들은 Equatable / Hashable 를 준수해야한다. 
+*  열거형에서는 모든 associated values가 Equatable / Hashable 를 준수해야한다.  
+** associated value가 없는 열거형은 따로 선언하지 않아도 Equatable와 Hashable 를 준수한다. 
