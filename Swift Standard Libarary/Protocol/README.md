@@ -10,10 +10,6 @@ protocol RandomAccessCollection where Self.Indices : RandomAccessCollection, Sel
 
 Random-access collections 은 O(1) 시간 내에서 원하는 거리만큼 인덱스를 이동할 수 있으며 인덱스 간의 거리를 측정할 수 있다. 
 
-Generic Structure 인 Dictionary 내에서 제공하는 randomElement 를 살펴보자. 
-
-func randomElement() -> (key: Key, value: Value)?
-
 
 ## OptionSet
 
@@ -75,5 +71,44 @@ public struct UIControlState : OptionSet {
     public static var reserved: UIControlState { get }
 }
 ``` 
+
+## CaseIterable
+
+> A type that provides a collection of all of its values.
+
+
+프로토콜 `CaseIterable` 을 준수하는 것은 associated value 가 없는 열거형이다.  
+`CaseIterable`을 사용하게 되면 allCases 프로퍼티를 이용하여 열거형의 모든 값이 접근 할 수 있다. 
+
+기존에 열거형에서 모든 값들에 접근하기 위해서는 아래와 같이 프로퍼티를 하나 더 만들었다. 
+
+```swift
+enum CompassDirection {
+    case north, south, east, west
+
+    var allCases: [CompassDirection] {
+        return [.north, .south, .east, .west]
+    }
+}
+
+```
+
+하지만 swift 4에서는 아래와 같이 사용이 가능하다. 
+
+```swift
+enum CompassDirection: CaseIterable {
+    case north, south, east, west
+}
+
+print("There are \(CompassDirection.allCases.count) directions.")
+// Prints "There are 4 directions."
+let caseList = CompassDirection.allCases
+                               .map({ "\($0)" })
+                               .joined(separator: ", ")
+// caseList == "north, south, east, west"
+```
+
+allCases 의 순서는 선언된 순서대로 제공한다.  
+
 
 
