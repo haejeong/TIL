@@ -1,5 +1,79 @@
 # Swift
 
+## String
+
+### Operators
+
+#### `..<(_:_:)`
+```swift
+static func ..< (minimum: String, maximum: String) -> Range<String>
+```
+
+minimum 보다 크거나 같고 maximum 보다 작은 범위를 리턴한다. 
+
+```swift
+let lessThanFive = 0.0..<5.0
+print(lessThanFive.contains(3.14))  // Prints "true"
+print(lessThanFive.contains(5.0))   // Prints "false"
+```
+
+#### `...(_:_:)`
+```swift
+static func ... (minimum: String, maximum: String) -> ClosedRange<String>
+```
+minimum 보다 크거나 같고, maximum 보다 작거나 같은 범위를 리턴한다.
+
+
+```swift
+let lowercase = "a"..."z"
+print(lowercase.contains("z"))
+// Prints "true"
+```
+
+#### `..<(_:)`
+```swift
+prefix static func ..< (maximum: String) -> PartialRangeUpTo<String>
+```
+maximum 보다 작은 범위를 리턴한다. 
+
+```swift
+let upToFive = ..<5.0
+
+upToFive.contains(3.14)       // true
+upToFive.contains(6.28)       // false
+upToFive.contains(5.0)        // false
+```
+
+#### `...(_:)`
+```swift
+prefix static func ... (maximum: String) -> PartialRangeThrough<String>
+```
+
+maximum 보다 작거나 같은 값의 범위를 리턴한다. 
+
+```swift
+let throughFive = ...5.0
+
+throughFive.contains(4.0)     // true
+throughFive.contains(5.0)     // true
+throughFive.contains(6.0)     // false 
+```
+
+#### `...(_:)`
+```swift
+postfix static func ... (minimum: String) -> PartialRangeFrom<String>
+```
+minimum 이상의 범위를 반환한다. 
+
+```swift
+let atLeastFive = 5.0...
+
+atLeastFive.contains(4.0)     // false
+atLeastFive.contains(5.0)     // true
+atLeastFive.contains(6.0)     // true
+```
+
+
 ## Dictionary 
 
 ### `allSatisfy(_:)`
