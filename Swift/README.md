@@ -76,6 +76,60 @@ atLeastFive.contains(6.0)     // true
 
 ## Dictionary 
 
+### `init(uniqueKeysWithValues:)`
+> key-value 형태로 되어있는 시퀀스로 딕셔너리를 새로 만들 수 있다. 
+
+```swift
+init<S>(uniqueKeysWithValues keysAndValues: S) where S : Sequence, S.Element == (Key, Value)
+```
+
+아래와 같이 digitWords와 1...5 두개의 시퀀스 값을 zip 으로 페어링 시킨 후에  
+`Dictionary(uniqueKeysWithValues:)` 로 새로운 dicationary 를 만든 것을 볼 수 있음.
+```swift
+let digitWords = ["one", "two", "three", "four", "five"]
+let wordToValue = Dictionary(uniqueKeysWithValues: zip(digitWords, 1...5))
+print(wordToValue["three"]!)
+// Prints "3"
+print(wordToValue)
+// Prints "["three": 3, "four": 4, "five": 5, "one": 1, "two": 2]"
+```
+
+### `init(_:uniquingKeysWith:)`
+> key-value 형태로 되어있는 시퀀스로 딕셔너리를 새로 만들 수 있는데,  
+클로저를 이용하여 중복값을 처리할 수 있다. 
+
+예제는 아래와 같다. 
+
+```swift
+let pairsWithDuplicateKeys = [("a", 1), ("b", 2), ("a", 3), ("b", 4)]
+
+let firstValues = Dictionary(pairsWithDuplicateKeys,
+                             uniquingKeysWith: { (first, _) in first })
+// ["b": 2, "a": 1]
+
+let lastValues = Dictionary(pairsWithDuplicateKeys,
+                            uniquingKeysWith: { (_, last) in last })
+// ["b": 4, "a": 3]
+```
+
+### `init(grouping:by:)`
+> 클로저에서 리턴하는 값으로 Key 를 만들고, 해당 키에 조건에 맞는 Value 를 맵핑하여 새로운 Dictionary 를 만든다. 
+
+
+```swift
+init<S>(grouping values: S, by keyForValue: (S.Element) throws -> Dictionary<Key, Value>.Key) rethrows where Value == [S.Element], S : Sequence
+```
+
+예제는 아래와 같다.  
+`students` 배열 안 값들의 첫 글자를 key로,  
+해당 key 를 첫글자로 시작하는 배열의 값들이 value 로 들어가는 것을 확인 할 수 있다. 
+
+```swift
+let students = ["Kofi", "Abena", "Efua", "Kweku", "Akosua"]
+let studentsByLetter = Dictionary(grouping: students, by: { $0.first! })
+// ["E": ["Efua"], "K": ["Kofi", "Kweku"], "A": ["Abena", "Akosua"]]
+```
+
 ### `allSatisfy(_:)`
 > Returns a Boolean value indicating whether every element of a sequence satisfies a given predicate.
 
@@ -113,6 +167,8 @@ let allHaveAtLeastFive = names.allSatisfy({ $0.count >= 5 })
 // allHaveAtLeastFive == true
 ```
 위와 같이 Dictionary `names` 에 있는 모든 문자열 길이가 5이상이므로 true 를 리턴한다. 
+
+
 
 ## DictionaryLiteral
 > A lightweight collection of key-value pairs.
