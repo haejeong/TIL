@@ -73,6 +73,65 @@ atLeastFive.contains(5.0)     // true
 atLeastFive.contains(6.0)     // true
 ```
 
+## Array
+
+### `swapAt(_:_:)`
+> 주어진 파라메터의 인덱스로 배열의 값을 교환한다. 
+
+```swift
+mutating func swapAt(_ i: Int, _ j: Int)
+```
+
+### `joined(separator:)`
+> seperator 로 join 하여 새로운 스트링을 생성한다. 
+
+```swift
+func joined(separator: String = default) -> String
+```
+array 의 element 들이 `StringProtocol`를 준수할 경우에만 가능하다. 
+
+예제는 아래와 같다. 
+
+```swift
+let cast = ["Vivien", "Marlon", "Kim", "Karl"]
+let list = cast.joined(separator: ", ")
+print(list)
+// Prints "Vivien, Marlon, Kim, Karl"
+```
+
+
+### `randomElement()`
+> 랜덤으로 배열의 값을 리턴
+
+```swift
+func randomElement() -> Element?
+```
+
+예제는 아래와 같다. 
+
+```swift
+let names = ["Zoey", "Chloe", "Amani", "Amaia"]
+let randomName = names.randomElement()!
+// randomName == "Amani"
+```
+
+### `randomElement(using:)`
+> number generator 랜덤으로 배열의 값을 리턴
+
+```swift
+func randomElement<T>(using generator: inout T) -> Element? where T : RandomNumberGenerator
+```
+
+예제는 아래와 같다. 
+
+```swift
+let names = ["Zoey", "Chloe", "Amani", "Amaia"]
+let randomName = names.randomElement(using: &myGenerator)!
+// randomName == "Amani"
+```
+
+`RandomAccessCollection`을 준수하는 콜렉션의 경우에는 O(1) 복잡도를 가진다. 
+
 
 ## Dictionary 
 
