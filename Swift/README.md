@@ -132,6 +132,62 @@ let randomName = names.randomElement(using: &myGenerator)!
 
 `RandomAccessCollection`을 준수하는 콜렉션의 경우에는 O(1) 복잡도를 가진다. 
 
+### `first(where:)`
+> where  오는 조건에 알맞는 배열의 첫번째 값을 리턴한다.
+
+```swift
+func first(where predicate: (Element) throws -> Bool) rethrows -> Element?
+```
+
+아래의 배열에서 where 로 들어오는 조건에서는 배열 element 의 값이  
+0보다 작은 값 중에 첫번째 값을 리턴하도록 한다. 
+결과값은 -2가 된다. 
+
+```swift
+let numbers = [3, 7, 4, -2, 9, -6, 10, 1]
+if let firstNegative = numbers.first(where: { $0 < 0 }) {
+    print("The first negative number is \(firstNegative).")
+}
+// Prints "The first negative number is -2."
+```
+
+### `firstIndex(of:)`
+> of 로 들어오는 값과 일치하는 값들 중에 첫번째 index 를 리턴한다. 
+
+```swift
+func firstIndex(of element: Element) -> Int?
+```
+
+아래의 예제에서 "Maxime"의 값을 찾아 배열의 해당 값의 index 를 리턴한다. 
+index 값이 있을 때 값을 바꾸는 예제를 확인 할 수 있다.
+
+```swift
+var students = ["Ben", "Ivy", "Jordell", "Maxime"]
+if let i = students.firstIndex(of: "Maxime") {
+    students[i] = "Max"
+}
+print(students)
+// Prints "["Ben", "Ivy", "Jordell", "Max"]"
+```
+
+### `firstIndex(where:)`
+> where 로 주어진 조건문에 해당하는 배열의 값의 첫번째 index 를 찾아 리턴한다. 
+
+
+```swift
+func firstIndex(where predicate: (Element) throws -> Bool) rethrows -> Int?
+```
+
+아래의 where 조건으로는 element 값이 A로 시작하는 것을 찾고,  
+해당 하는 값이 있을 경우 그 element 의 index 의 값을 리턴한다. 
+
+```swift
+let students = ["Kofi", "Abena", "Peter", "Kweku", "Akosua"]
+if let i = students.firstIndex(where: { $0.hasPrefix("A") }) {
+    print("\(students[i]) starts with 'A'!")
+}
+// Prints "Abena starts with 'A'!"
+```
 
 ## Dictionary 
 
