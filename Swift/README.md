@@ -189,6 +189,50 @@ if let i = students.firstIndex(where: { $0.hasPrefix("A") }) {
 // Prints "Abena starts with 'A'!"
 ```
 
+### `shuffled(using:)`
+> 주어진 랜덤 generator 로 섞어 다시 리턴해준다. 
+
+```swift
+func shuffled<T>(using generator: inout T) -> [Element] where T : RandomNumberGenerator
+```
+
+예제는 아래와 같다. 
+
+```swift
+let numbers = 0...9
+let shuffledNumbers = numbers.shuffled(using: &myGenerator)
+// shuffledNumbers == [8, 9, 4, 3, 2, 6, 7, 0, 5, 1]
+```
+
+### `partition(by:)`
+
+> 주어진 조건에 맞지 않는 값들을 먼저 재배열 한 후에 조건에 맞는 값들을 나중에 배치하여, 
+조건에 맞지 않는 마지막 값의 index를 리턴한다. 
+
+`belongsInSecondPartition` 은 해당 배열을 분할하는데 사용한다. 
+
+예제는 아래와 같다. 주어진 조건은 30 보다 큰 조건이다.  
+배열 안에 값들이 30보다 작거나 같은 값들을 먼저 나열하고, 마지막에 조건에 맞는 30보다 큰 값을 배치하고  
+조건에 맞는 값이 시작된  
+
+```swift
+var numbers = [30, 40, 20, 30, 30, 60, 10]
+let p = numbers.partition(by: { $0 > 30 })
+// p == 5
+// numbers == [30, 10, 20, 30, 30, 60, 40]
+```
+
+위와 같이 제 배치 한 이후에 주어진 index 로 아래와 같이 배열을 분리할 수 있다.  
+```swift
+let first = numbers[..<p]
+// first == [30, 10, 20, 30, 30]
+let second = numbers[p...]
+// second == [60, 40]
+```
+
+
+
+
 ## Dictionary 
 
 ### `init(uniqueKeysWithValues:)`
