@@ -230,8 +230,106 @@ let second = numbers[p...]
 // second == [60, 40]
 ```
 
+### `dropFirst()`
+> 시퀀스의 첫번째 element 를 제외하고 리턴한다. 
 
+```swift
+func dropFirst() -> ArraySlice<Element>
+```
 
+예제는 아래와 같다.  
+배열 `[1, 2, 3, 4, 5]` 에서 dropFirst 을 할 경우 index가 0 인 element 가 제거된다. 
+
+```swift
+let numbers = [1, 2, 3, 4, 5]
+print(numbers.dropFirst())
+// Prints "[2, 3, 4, 5]"
+```
+
+배열이 비어있을 경우 그대로 비어있는 배열을 반환한다. 
+```swift
+let empty: [Int] = []
+print(empty.dropFirst())
+// Prints "[]"
+```
+
+### `dropFirst(_:)`
+> 파라메터로 넘겨준 수 만큼의 element를 앞부터 제외하고 나머지 배열을 반환한다. 
+
+```swift
+func dropFirst(_ k: Int) -> ArraySlice<Element>
+```
+`k`는 배열의 시작부터 삭제할 element 갯수를 의미한다. `k`는 0보다 크거나 같다.
+
+예제는 아래와 같다. 
+`[1, 2, 3, 4, 5]`에서 앞에서 `2`만큼의 index 를 지나 나머지 element 를 반환한다. 
+
+```swift
+let numbers = [1, 2, 3, 4, 5]
+print(numbers.dropFirst(2))
+// Prints "[3, 4, 5]"
+print(numbers.dropFirst(10))
+// Prints "[]"
+```
+
+### `dropLast()`
+> 배열의 마지막 element 를 제외한 모든 element 를 리턴한다. 
+
+```swift
+func dropLast() -> ArraySlice<Element>
+```
+
+예제는 아래와 같다.  
+`[1, 2, 3, 4, 5]` 배열에서 마지막 element 를 제외한 `[1, 2, 3, 4]` 를 리턴한다. 
+
+```swift
+let numbers = [1, 2, 3, 4, 5]
+print(numbers.dropLast())
+// Prints "[1, 2, 3, 4]"
+```
+
+배열이 비어있을 때는 `dropLast` 이후 빈 배열을 리턴한다. 
+
+```swift
+let empty: [Int] = []
+print(empty.dropLast())
+// Prints "[]"
+```
+
+### `dropLast(_:)`
+> 파라메터로 넘겨준 수 만큼의 element를 뒤부터 제외하고 나머지 배열을 반환한다. 
+
+```swift
+func dropLast(_ k: Int) -> ArraySlice<Element>
+```
+
+`k`는 배열의 끝부터 삭제할 element 갯수를 의미한다. `k`는 0보다 크거나 같다.
+
+예제는 아래와 같다.  
+`k` 가 배열의 크기보다 클 경우 빈 배열을 리턴한다. 
+
+```swift
+let numbers = [1, 2, 3, 4, 5]
+print(numbers.dropLast(2))
+// Prints "[1, 2, 3]"
+print(numbers.dropLast(10))
+// Prints "[]"
+```
+
+### `drop(while:)`
+> 주어진 `predicate`가 true 를 반환할 때까지 다음 element 로 넘어가고,  
+false 일 때부터의 모든 값을 리턴한다. 
+
+예제는 아래와 같다. 
+`[1, 2, 3, 4, 5, 6, 7]` 에서 값이 `4`와 다를 때 까지 다음 element 로 넘어가다 
+같아지는 element 부터 그 뒤의 값들을 반환한다. 
+
+```swift
+var arrayValue = [1, 2, 3, 4, 5, 6, 7]
+arrayValue.drop { (value) -> Bool in
+    return value != 4
+}
+```
 
 ## Dictionary 
 
