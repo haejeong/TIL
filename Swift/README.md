@@ -230,6 +230,146 @@ let second = numbers[p...]
 // second == [60, 40]
 ```
 
+### `dropFirst()`
+> 시퀀스의 첫번째 element 를 제외하고 리턴한다. 
+
+```swift
+func dropFirst() -> ArraySlice<Element>
+```
+
+예제는 아래와 같다.  
+배열 `[1, 2, 3, 4, 5]` 에서 dropFirst 을 할 경우 index가 0 인 element 가 제거된다. 
+
+```swift
+let numbers = [1, 2, 3, 4, 5]
+print(numbers.dropFirst())
+// Prints "[2, 3, 4, 5]"
+```
+
+배열이 비어있을 경우 그대로 비어있는 배열을 반환한다. 
+```swift
+let empty: [Int] = []
+print(empty.dropFirst())
+// Prints "[]"
+```
+
+### `dropFirst(_:)`
+> 파라메터로 넘겨준 수 만큼의 element를 앞부터 제외하고 나머지 배열을 반환한다. 
+
+```swift
+func dropFirst(_ k: Int) -> ArraySlice<Element>
+```
+`k`는 배열의 시작부터 삭제할 element 갯수를 의미한다. `k`는 0보다 크거나 같다.
+
+예제는 아래와 같다. 
+`[1, 2, 3, 4, 5]`에서 앞에서 `2`만큼의 index 를 지나 나머지 element 를 반환한다. 
+
+```swift
+let numbers = [1, 2, 3, 4, 5]
+print(numbers.dropFirst(2))
+// Prints "[3, 4, 5]"
+print(numbers.dropFirst(10))
+// Prints "[]"
+```
+
+### `dropLast()`
+> 배열의 마지막 element 를 제외한 모든 element 를 리턴한다. 
+
+```swift
+func dropLast() -> ArraySlice<Element>
+```
+
+예제는 아래와 같다.  
+`[1, 2, 3, 4, 5]` 배열에서 마지막 element 를 제외한 `[1, 2, 3, 4]` 를 리턴한다. 
+
+```swift
+let numbers = [1, 2, 3, 4, 5]
+print(numbers.dropLast())
+// Prints "[1, 2, 3, 4]"
+```
+
+배열이 비어있을 때는 `dropLast` 이후 빈 배열을 리턴한다. 
+
+```swift
+let empty: [Int] = []
+print(empty.dropLast())
+// Prints "[]"
+```
+
+### `dropLast(_:)`
+> 파라메터로 넘겨준 수 만큼의 element를 뒤부터 제외하고 나머지 배열을 반환한다. 
+
+```swift
+func dropLast(_ k: Int) -> ArraySlice<Element>
+```
+
+`k`는 배열의 끝부터 삭제할 element 갯수를 의미한다. `k`는 0보다 크거나 같다.
+
+예제는 아래와 같다.  
+`k` 가 배열의 크기보다 클 경우 빈 배열을 리턴한다. 
+
+```swift
+let numbers = [1, 2, 3, 4, 5]
+print(numbers.dropLast(2))
+// Prints "[1, 2, 3]"
+print(numbers.dropLast(10))
+// Prints "[]"
+```
+
+### `drop(while:)`
+> 주어진 `predicate`가 true 를 반환할 때까지 다음 element 로 넘어가고,  
+false 일 때부터의 모든 값을 리턴한다. 
+
+예제는 아래와 같다. 
+`[1, 2, 3, 4, 5, 6, 7]` 에서 값이 `4`와 다를 때 까지 다음 element 로 넘어가다 
+같아지는 element 부터 그 뒤의 값들을 반환한다. 
+
+```swift
+var arrayValue = [1, 2, 3, 4, 5, 6, 7]
+arrayValue.drop { (value) -> Bool in
+    return value != 4
+}
+```
+
+### `ArraySlice` - Generic Structure
+> Array, ContiguousArray 의 슬라이스 또는 ArraySlice 의 인스턴스 
+
+ArraySlice 타입을 사용하면 크기가 큰 배열에서 작업을 빠르고 효율적으로 할 수 있다. 슬라이스의 요소를 새 저장소에 복사하는 대신 ArraySlice 인스턴스는 더 큰 배열의 저장소에 대한 보기를 제공한다. 또한 ArraySlice 는 배열과 동일한 인터페이스를 제공하므로 일반적으로 슬라이스에서 원래 배열과 동일한 작업을 수행 할 수 있다. 
+업을 수행할 수 있습니다.
+
+아래와 같은 숫자 배열로 예를 들어보자. 
+
+```swift
+let absences = [0, 2, 0, 4, 0, 3, 1, 0]
+```
+
+`absences`를 반으로 나눠 앞과 뒤를 비교하려 한다. 
+
+```swift
+let midpoint = absences.count / 2
+
+let firstHalf = absences[..<midpoint]
+let secondHalf = absences[midpoint...]
+```
+
+위의 `firstHalf`와 `secondHalf`는 모두 스토리지에 할당하지 하지 않는다.  
+슬라이스에서는 배열의 모든 메소드를 사용할 수 있다.  
+`reduce`를 이용하여 각 합을 계산해본다. 
+
+```swift
+let firstHalfSum = firstHalf.reduce(0, +)
+let secondHalfSum = secondHalf.reduce(0, +)
+
+if firstHalfSum > secondHalfSum {
+    print("More absences in the first half.")
+} else {
+    print("More absences in the second half.")
+}
+```
+
+> ArraySlice 인스턴스의 장기 저장소는 권장하지 않는다. 슬라이스에는 원래 배열의 수명이 끝난 후에도 표시될 뿐 아니라 더 큰 배열의 전체 스토리지에 대한 참조가 있다. 따라서 슬라이스를 장기간 보관하면 더 이상 액세스 할 수 없는 요소의 수명이 길어질 수 있으며, 이는 메모리  나 오브젝 릭을 유발 할 수 있다. 
+
+Array 나 ContinuousArray 와는 달리, ArraySlice 인스턴스의 시작 index 는 항상 0은 아니다. 슬라이스는 동일한 요소에 대해 더 큰 배열의 동일한 index 를 유지하므로 슬라이스의 시작 index 는 해당 index가 생성된 방식에 따라 달라지며 전체 배열 또는 슬라이스에서 index 기반 작업을 할 수 있다. 
 
 
 
