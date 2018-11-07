@@ -283,3 +283,41 @@ print(addresses[0] == home)
 print(addresses.contains(home))
 // Prints "true"
 ```
+
+
+
+#### Equality is Separate From Identity
+
+클래스 인스턴스의 identity가 인스턴스 값의 일부가 아닙니다. 정수 값을 포함하는 IntegerRef라는 클래스를 생각해보자. 다음은 Equatable 을 준수하는 IntegerRef 와 == 함수이다. 
+
+```swift
+class IntegerRef: Equatable {
+    let value: Int
+    init(_ value: Int) {
+        self.value = value
+    }
+
+    static func == (lhs: IntegerRef, rhs: IntegerRef) -> Bool {
+        return lhs.value == rhs.value
+    }
+}
+```
+
+== 함수의 구현에서는 두 인수가 동일한 인스턴스인지, 값 속성에 저장된 정수가 동일한 두 개의 서로 다른 인스턴스인지 여부에 관계없이 동일한 값을 리턴한다. 예제는 아래와 같다. 
+
+
+```swift
+let a = IntegerRef(100)
+let b = IntegerRef(100)
+
+print(a == a, a == b, separator: ", ")
+// Prints "true, true"
+```
+
+반면 클래서 인스턴스의 identity 는 === 연산자를 사용하여 비교할 수 있다. 예제는 아래와 같다. 
+
+```swift
+let c = a
+print(c === a, c === b, separator: ", ")
+// Prints "true, false"
+```
