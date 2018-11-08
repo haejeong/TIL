@@ -199,3 +199,125 @@ do {
 }
 // Prints "Parsing error: mismatchedTag [19:5]"
 ```
+
+
+## Equatable
+
+값이 같은지 비교할 수 있는 타입 
+
+#### Declaration
+
+```swift
+protocol Equatable
+```
+
+#### Overview
+
+`Equatable` 프로토콜을 준수하는 타입들은 == 나 != 을 이용하여 같음을 비교할 수 있다. `Swift Standard Libarary` 의 대부분은 `Equatable` 을 준수한다. 
+
+일부 sequence 나 collection 작업은 element 가 Equatable 을 준수 할 때 더 간단히 사용할 수 있다. 예를 들어 배열에 특정 값이 포함되어 있는지 확인하려면, 배열 요소가 동일한지 확인한 후에 제공하는 클로저를 사용하는 대신 `contains(_:)` 메소드를 사용할 수 있다.  다음 예제에서는 문자 배열에서contains(_:) 메소드를 사용하는 방법을 보여준다. 
+
+```swift
+let students = ["Kofi", "Abena", "Efua", "Kweku", "Akosua"]
+
+let nameToCheck = "Kofi"
+if students.contains(nameToCheck) {
+    print("\(nameToCheck) is signed up!")
+} else {
+    print("No record of \(nameToCheck).")
+}
+// Prints "Kofi is signed up!"
+```
+
+#### Conforming to the Equatable Protocol
+
+만드려는 타입에 `Equatable` 프로토콜을 추가하여 collection 안에서 특정 인스턴스를 찾을 때 더 편한 API를 제공받을 수 있다. `Equatable`은 `Hashable`과 `Comparable` 프로토콜을 기반으로 하여  세트 구성이나 element 들을 정렬하는 것과 같은 더 많은 api 를 사용할 수 있다. 
+
+- 구조체의 경우 프로퍼티들은 반드시 Equatable 을 준수해야한다. 
+- 열거형에 경우 모든 associated value 들이 `Equatable` 을 준수해야한다. ( associated value 가 없는 열거형에서는 선언이 없어도 `Equatable` 을 준수하게 된다. 
+
+Equatable 을 준수하는 하거나 위에 나열된 기준을 충족하지 않는 유형의 Equatable 을 애택하거나, 기존 유형을 Equatable 에 맞게 확정하려면 static method 인 (==) 를 재정의 하자. 표준 라이버러리는 동등하지 않은 연산자 (!=) 에 대해 사용자 정의 == 함수를 호출하고 결과를 부정하는 것을 제공하도록 구현한다. 
+
+예를 들어 주소, 집/빌딩 번호, 거리 이름, 그리고 unit 숫자를 저장하는 StreetAddress 라는 클래가 있다고 생각해보자.  
+StreetAddress 선언은 아래와 같이 했다. 
+
+```swift
+class StreetAddress {
+    let number: String
+    let street: String
+    let unit: String?
+
+    init(_ number: String, _ street: String, unit: String? = nil) {
+        self.number = number
+        self.street = street
+        self.unit = unit
+    }
+}
+```
+
+이제 주소들을 저장한 배열에서 특정 주소를 확인해야 한다 가정해보자.  
+각 요소마다 돌아가며 closure을 사용하지 않고 `contains(_:)` 메소드를 사용하기 위해서는  
+StreetAddress 를 Equatable 로 확장한다. 
+
+```swift
+extension StreetAddress: Equatable {
+    static func == (lhs: StreetAddress, rhs: StreetAddress) -> Bool {
+        return
+            lhs.number == rhs.number &&
+            lhs.street == rhs.street &&
+            lhs.unit == rhs.unit
+    }
+}
+```
+StreetAddress 타입은 이제 Equatable 을 준수한다.  
+이제 == 를 사용하여 두 인스턴스가 같은지 비교할 수 있고, `contains(_:)`메소드를 호출하여 동등 조건을 확인 할 수 있다. 
+
+```swift
+let addresses = [StreetAddress("1490", "Grove Street"),
+                 StreetAddress("2119", "Maple Avenue"),
+                 StreetAddress("1400", "16th Street")]
+let home = StreetAddress("1400", "16th Street")
+
+print(addresses[0] == home)
+// Prints "false"
+print(addresses.contains(home))
+// Prints "true"
+```
+
+
+
+#### Equality is Separate From Identity
+
+클래스 인스턴스의 identity가 인스턴스 값의 일부가 아닙니다. 정수 값을 포함하는 IntegerRef라는 클래스를 생각해보자. 다음은 Equatable 을 준수하는 IntegerRef 와 == 함수이다. 
+
+```swift
+class IntegerRef: Equatable {
+    let value: Int
+    init(_ value: Int) {
+        self.value = value
+    }
+
+    static func == (lhs: IntegerRef, rhs: IntegerRef) -> Bool {
+        return lhs.value == rhs.value
+    }
+}
+```
+
+== 함수의 구현에서는 두 인수가 동일한 인스턴스인지, 값 속성에 저장된 정수가 동일한 두 개의 서로 다른 인스턴스인지 여부에 관계없이 동일한 값을 리턴한다. 예제는 아래와 같다. 
+
+
+```swift
+let a = IntegerRef(100)
+let b = IntegerRef(100)
+
+print(a == a, a == b, separator: ", ")
+// Prints "true, true"
+```
+
+반면 클래서 인스턴스의 identity 는 === 연산자를 사용하여 비교할 수 있다. 예제는 아래와 같다. 
+
+```swift
+let c = a
+print(c === a, c === b, separator: ", ")
+// Prints "true, false"
+```
