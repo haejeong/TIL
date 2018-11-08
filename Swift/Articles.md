@@ -21,3 +21,72 @@
 
 ### 프로토콜을 사용하여 공유 implement 을 적용할 때 구조체를 사용한다. 
 
+
+## Using Key-Value Observing in Swift
+
+
+>  다른 Object 에게 Property 의 변화를 알려준다. 
+
+#### Overview
+
+Key-value obvserving 은 다른 Object 에게 Property 들의 변화를 알려줄 수 있는 코코아 프로그래밍 패턴이다. 모델과 뷰처럼 논리적으로 분리되어있는 것들에게 변화를 알려줄 때 유용하게 사용할 수 있다. NSObject 를 상속받는 클래스에서만 key-value observing 을 사용할 수 있다. 
+
+#### Annotate a Property for Key-Value Observing
+
+key-value observing 을 하고 싶은 프로퍼티에 @objc 와 dynamic 을 사용한다. 아래 예제에서 MyObjectToObserve 클래스에 myDate 프로퍼티의 변화를 감지할 수 있다. 
+
+```swift
+class MyObjectToObserve: NSObject {
+    @objc dynamic var myDate = NSDate(timeIntervalSince1970: 0) // 1970
+    func updateDate() {
+        myDate = myDate.addingTimeInterval(Double(2 << 30)) // Adds about 68 years.
+    }
+}
+```
+
+#### Define an Observer
+
+Observer 클래스의 인스턴스는 하나 이상의 Property 들의 변화를 관리할 수 있다. observer 를 생성할 때`observe(_:options:changeHandler)` 메소드를 호출함으로써 observing 을 시작 할 수 있다. 
+
+아래 예제와 같이 `\.objectToObserve.myDate` MyObjectToObserve 의 프로퍼티인 myDate 를 키패스를 참조하게 한다. 
+
+```swift
+class MyObserver: NSObject {
+    @objc var objectToObserve: MyObjectToObserve
+    var observation: NSKeyValueObservation?
+    
+    init(object: MyObjectToObserve) {
+        objectToObserve = object
+        super.init()
+        
+        observation = observe(
+            \.objectToObserve.myDate,
+            options: [.old, .new]
+        ) { object, change in
+            print("myDate changed from: \(change.oldValue!), updated to: \(change.newValue!)")
+        }
+    }
+}
+```
+
+`NSKeyValueObservedChange` 의 프로퍼티인 oldValue 와 newValue 를 이용하여 값이 어떻게 바뀌었는지 관찰 할 수 있다. 
+
+값이 어떻게 변화하였는지 알고 싶지 않을 때는 options 파라메터를 비워두면 된다. options 를 비워두면 oldValue 와 newValue 프로퍼티가 nil 이 된다. 
+
+#### Associate the Observer with the Property to Observe
+
+Object 를 Observer 의 initializer 에 전달하여 프로퍼티들을 Observer 와 연결한다. 
+
+```swift
+let observed = MyObjectToObserve()
+let observer = MyObserver(object: observed)
+```
+
+#### Respond to a Property Change
+
+key-value observing 을 설정한 Object들은 이들의 Observer 에게 프로퍼티의 값 변화를 알려준다. 아래와 같은 예제에서는 updateDate 메소드를 호출함으로써 myDate 프로퍼티의 값을 변경한다. 이 메소드는 Observer 의 변경 처리기를 자동적으로 트리거한다. 
+
+```swift
+observed.updateDate() // Triggers the observer's change handler.
+// Prints "myDate changed from: 1970-01-01 00:00:00 +0000, updated to: 2038-01-19 03:14:08 +0000"
+```
