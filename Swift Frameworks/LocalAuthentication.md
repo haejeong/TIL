@@ -22,8 +22,6 @@ class LAContext : NSObject
 
 > 지정된 정책에 대해 인증을 진행할 수 있는지 여부를 확인한다.
 
-#### Declaration
-
 ```swift
 canEvaluatePolicy(_:error:)
 ```
@@ -98,6 +96,39 @@ var evaluatedPolicyDomainState: Data? { get }
 이 속성은 `canEvaluatePolicy(_:error:)` 메소드가 생체 인식 정책에 성공하거나 `evaluatePolicy(_:localizedReason:reply:)` 메소드가 호출되고 성공적인 생체 인증인 경우에만 값을 리턴한다. 그렇지 않으면 0이 반환된다. 
 
 반환된 데이터는 불투명 구조이다. 이 값을 사용하여 이 속성에서 반환된 다른 값과 비교하여 승인된 데이터베이스가 업데이트되었는지 확인할 수 있다. 그러나 변경의 특성은 이 데이터에서 결정할 수 없다.
+
+
+#### Evaluating Access Controls
+
+##### `evaluateAccessControl(_:operation:localizedReason:reply:)`
+
+> 지정된 작업에 대한 액세스 제어를 평가
+
+```swift
+func evaluateAccessControl(_ accessControl: SecAccessControl, 
+                 operation: LAAccessControlOperation, 
+           localizedReason: String, 
+                     reply: @escaping (Bool, Error?) -> Void)
+
+```
+
+이 방법은 액세스 제어를 비동기식으로 평가한다. 액세스 제어 평가에는 사용자에게 다양한 종류의 상호 작용 또는 인증을 요청하는 작업이 포함될 수 있다. 실제 동작은 액세스 제어 및 장치 유형에 따라 달라진다. 설치된 구성 프로필의 영향을 받을 수도 있다.
+
+사용자에게 표시되는 현지화된 문자열은 해당 문자열이 자신을 인증하도록 요청하는 이유와 해당 인증을 기반으로 수행할 작업에 대한 명확한 이유를 제공한다. 이 문자열은 사용자의 현재 언어로 제공되어야 하며 짧고 선명해야 한다. 인증 대화 상자의 다른 위치에 표시되므로 앱 이름을 포함할 수 없다. MacOS에서는 대화 상자 제목에 표시되고 iOS에서는 대화 상자 부제에 표시된다.
+
+이전에 성공적으로 액세스 제어를 평가했을 때 반드시 나중 평가에 성공했다고 가정해서는 안 된다. 액세스 제어 평가는 사용자 또는 시스템에 의한 취소를 포함하여 다양한 이유로 실패할 수 있다. 
+
+##### LAAccessControlOperation
+
+> 접근 제어를 위해 평가되어야 할 작업.
+
+```swift
+enum LAAccessControlOperation : Int
+
+```
+
+다음 값 중 하나를 사용하여  `evaluateAccessControl(_:operation:localizedReason:reply:)` 메서드를 호출할 때 액세스 제어를 평가할 작업을 지정한다. 
+
 
 #### Customizing Authentication Prompts
 
