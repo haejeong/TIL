@@ -1,0 +1,34 @@
+# QLPreviewController
+
+> 아이템을 미리보기할 수 있는 특별한 뷰 
+
+#### Declaration
+
+```swift
+class QLPreviewController : UIViewController
+```
+#### Overview
+
+미리보기에는 항목 URL의 마지막 경로 요소에서 가져온 제목이 포함되어 있다. 미리보기 항목에 대해 미리보기 `previewItemTitle` 액세스자를 구현하여 이 제목을 재정의할 수 있다.
+
+`QLPreviewController`는 아래와 같은 항목들을 미리보기 할 수 있다. 
+
+- iWork documents
+- Microsoft Office documents (Office ‘97 and newer)
+- Rich Text Format (RTF) documents
+- PDF files
+- Images
+- Text files whose uniform type identifier (UTI) conforms to the public.text type (see Uniform Type Identifiers Reference)
+- Comma-separated value (csv) files
+- 3D models in USDZ format (with both standalone and AR views for viewing the model)
+
+`QLPreviewController` 는 현재 뷰컨틀로러에서 `present(_:animated:completion:)` 를 호출하여 화면 전체를 덮는 모달로 띄울 수 있다. 또는 `UINavigationController`를 이용하여 푸시할 수 있다. 
+
+Quick Look 미리 보기 컨트롤러를 사용하려면 데이터 원본 개체를 제공해야 한다. 데이터 원본은 컨트롤러에 미리 보기 항목을 제공하고 미리 보기 탐색 목록에 포함할 항목 수를 알려준다. 목록에 항목이 두 개 이상 있는 경우 사용자가 항목 간에 전환할 수 있도록 모듈식 컨트롤러에서 제공하는 탐색 화살표를 표시한다. 탐색 컨트롤러를 사용하여 푸시된 `Quick Look preview controller`의 경우 탐색 모음에서 단추를 제공하여 탐색 목록을 이동할 수 있다. 
+
+미리보기 컨트롤러에서 제공하는 방법에 대한 자세한 내용은 `QLPreviewControllerDataSource`와 `QLPreviewItem`를 참고하자. 
+
+
+
+
+
