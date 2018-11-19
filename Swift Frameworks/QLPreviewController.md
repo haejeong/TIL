@@ -2,12 +2,12 @@
 
 > 아이템을 미리보기할 수 있는 특별한 뷰 
 
-#### Declaration
+## Declaration
 
 ```swift
 class QLPreviewController : UIViewController
 ```
-#### Overview
+## Overview
 
 미리보기에는 항목 URL의 마지막 경로 요소에서 가져온 제목이 포함되어 있다. 미리보기 항목에 대해 미리보기 `previewItemTitle` 액세스자를 구현하여 이 제목을 재정의할 수 있다.
 
@@ -30,5 +30,40 @@ Quick Look 미리 보기 컨트롤러를 사용하려면 데이터 원본 개체
 
 
 
+## Topics 
 
+### Configuring a Quick Look Preview Controller
 
+#### dataSource
+
+> The Quick Look preview controller's data source.
+
+##### Declaration 
+
+````swift
+weak var dataSource: QLPreviewControllerDataSource? { get set }
+````
+
+##### Discussion
+
+Quick Look preview controller 를 사용하기 위해선 datasource 를 구현해야한다. datasource 는 controller 에 표시할 아이템들을 제공하고, 미리보기 탐색 목록에 포함할 항목 수를 알려준다. 설명은 `QLPreviewControllerDataSource`에 있다. 
+ 
+###### `numberOfPreviewItems(in:)`
+> `Quick Look preview controller`에서 미리보기 탐색을 할 항목수를 알아야 할 때 사용함.  
+
+###### `previewController(_:previewItemAt:)`
+> 특정 index 위치에 나타내는 아이템을 알아낼 때 사용한다. 
+
+#### delegate
+
+> The Quick Look preview controller’s delegate object.
+
+##### Declaration
+
+```swift
+weak var delegate: QLPreviewControllerDelegate? { get set }
+```
+
+##### Discussion
+
+delegate 가 사용자가 미리보기에서 url 을 열 것인지 여부를 결정한다. 
