@@ -64,6 +64,78 @@ Quick Look preview controller 를 사용하기 위해선 datasource 를 구현�
 weak var delegate: QLPreviewControllerDelegate? { get set }
 ```
 
-##### Discussion
+##### Overview
+`QLPreviewController`의 delegate 는 이 프로토콜을 사용하여 적용해야 한다. 
 
-delegate 가 사용자가 미리보기에서 url 을 열 것인지 여부를 결정한다. 
+- Quick Look 미리보기를 위해 확대/축소 애니메이션을 제공한다. 
+- 사용자가 미리보기에서 클릭하여 url 을 열 것인가의 여부를 정한다. 
+- 미리보기를 열고, 닫는 것에 응답한다. 
+
+위에 설명한 방법은 선택사항이지만 필요하다. 
+
+###### `previewController(_:frameFor:inSourceView:)`
+> Quick Look 미리보기를 호출 할 때 전체를 덮는 화면으로 표시하거나 닫을 때 zoom 효과를 제공한다. 
+
+```swift
+optional func previewController(_ controller: QLPreviewController, 
+                       frameFor item: QLPreviewItem, 
+                   inSourceView view: AutoreleasingUnsafeMutablePointer<UIView?>) -> CGRect
+```
+
+어플리케이션에 표시되는 미리 보기 항목의 프레임을 정의하는 CGRect object. 
+
+###### `previewControllerWillDismiss(_:)`
+> 미리보기 컨트롤러가 닫치기 전에 불린다.
+
+```swift
+optional func previewControllerWillDismiss(_ controller: QLPreviewController)
+```
+
+###### `previewControllerDidDismiss(_:)`
+> 미리보기 컨트롤러가 닫히고 나서 불린다.
+
+```swift
+optional func previewControllerDidDismiss(_ controller: QLPreviewController)
+```
+
+###### `previewController(_:shouldOpen:for:)`
+
+> Quick Look preview controller 에서 url 을 열기 전에 호출된다. 
+
+
+```swift
+optional func previewController(_ controller: QLPreviewController, 
+                     shouldOpen url: URL, 
+                            for item: QLPreviewItem) -> Bool
+```
+
+#### Managing Item Previews
+
+###### `canPreview(_:)`
+> Quick Look preview controller 가 항목을 표시할 수 있는지 여부를 알려준다.
+
+```swift
+class func canPreview(_ item: QLPreviewItem) -> Bool
+```
+
+###### `currentPreviewItem`
+
+> Quick Look preview controller 에 현재 표시된 항목 리턴
+
+```swift
+var currentPreviewItem: QLPreviewItem? { get }
+```
+
+###### `refreshCurrentPreviewItem()`
+
+> Quick Look preview controller를 눌러 현재 미리보기 항목의 표시를 다시 계산한다. 
+
+```swift
+func refreshCurrentPreviewItem()
+```
+
+###### `reloadData()`
+
+> datasource 를 reload 한다. 
+
+
