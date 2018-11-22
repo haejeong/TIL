@@ -67,3 +67,25 @@ joined 메소드는 항상 lazy 하지만 결과에 적용되는 알고리즘에
 - c.joined().map(f) map으로 새로운 array 를 리턴한다. 
 - c.lazy.joined().map(f) lazy 하게 map을 이용하여 LazyMapSequence를 리턴한다. 
 
+### StaticString
+
+> 컴파일 타임에 알려진 텍스트를 나타내도록 설계된 문자열
+
+#### Declaration
+
+```swift
+struct StaticString
+```
+
+#### Overview
+
+StaticString 유형의 인스턴스는 값을 변경할 수 없다. StaticString은 Swift에서 일반적으로 사용되는 String 유형과 달리 제한된 포인터 기반 콘텐츠 액세스를 제공한다. static 문자열은 해당 값을 ASCII 코드 단위 시퀀스에 대한 포인터, UTF-8 코드 단위 시퀀스에 대한 포인터 또는 단일 유니코드 스칼라 값으로 저장할 수 있다. 
+
+##### hasPointerRepresentation
+
+> static 문자열이 포인터를 ASCII 또는 UTF-8 코드 단위로 저장할지 여부를 나타내는 boolean 값.
+
+```swift
+var hasPointerRepresentation: Bool { get }
+```
+
