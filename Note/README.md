@@ -29,3 +29,53 @@ static let hideDocumentDirectoryUrl = FileManager.default.urls(for: .application
 
 위와 같이 ios11 부터 제공하는 files 애플리케이션을 이용하여,  
 다른 앱과 파일 공유도 가능하며, 내가 다운받은 파일들을 바로 확인 할 수 있다. 
+
+
+## Info.plist Localization 
+
+plist 에서 정의된 권한 요청 시 나오는 멘트를 Localization 하고 싶다 !! 
+
+아래는 plist 에서 추가해 준 한글 멘트들이다. 
+
+```swift
+<key>NSCameraUsageDescription</key>
+	<string>바로 촬영한 사진을 첨부할 수 있습니다.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>연락처를 가져올 수 있습니다.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>동영상을 녹화할 수 있습니다.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>사진 및 동영상을 저장 또는 첨부할 수 있습니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>사진 및 동영상을 저장 또는 첨부할 수 있습니다.</string>
+    <key>NSFaceIDUsageDescription</key>
+    <string>Face ID를 사용하기 위해 접근 권한을 허용해야 합니다.</string>
+```
+
+`File > New > File..` 에서 `string file` 을 선택해준다.  
+아래와 같이 원하는 Language 를 선택해준다. 
+![](localization_plist.png)
+
+위의 xml파일 내의 `NSCameraUsageDescription` 키와 같이 사용해 준 값들을 원하는 한글/영문 설명을 string file 에 작성한다. 
+
+
+아래는 영문 파일에 작성한 내용이다. 
+
+```swift
+"NSCameraUsageDescription" = "We use your camera to let you take photos and attach them directly to emails.";
+"NSContactsUsageDescription" = "Mail use your address book to provide contact suggestions.";
+"NSPhotoLibraryAddUsageDescription" = "We use your camera roll to let you attach photos to and save photos from your emails.";
+"NSPhotoLibraryUsageDescription" = "We use your camera roll to let you attach photos to and save photos from your emails.";
+"NSFaceIDUsageDescription" = "Allows 'Mail' to use Face ID for unlocking passcode.";
+``` 
+
+아래는 한글 파일에 작성한 내용이다. 
+
+```swift
+"NSCameraUsageDescription" = "바로 촬영한 사진을 첨부할 수 있습니다.";
+"NSContactsUsageDescription" = "연락처를 가져올 수 있습니다.";
+"NSPhotoLibraryAddUsageDescription" = "사진 및 동영상을 저장 또는 첨부할 수 있습니다.";
+"NSPhotoLibraryUsageDescription" = "사진 및 동영상을 저장 또는 첨부할 수 있습니다.";
+"NSFaceIDUsageDescription" = "Face ID를 사용하기 위해 접근권한을 하용해야 합니다.";
+```
+
