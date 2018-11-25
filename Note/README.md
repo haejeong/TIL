@@ -79,3 +79,44 @@ plist 에서 정의된 권한 요청 시 나오는 멘트를 Localization 하고
 "NSFaceIDUsageDescription" = "Face ID를 사용하기 위해 접근권한을 하용해야 합니다.";
 ```
 
+## AlertController Style 바꾸기
+
+```swift
+let alertController = UIAlertController(title: "title", message: "messages", preferredStyle: .alert)
+```
+
+위와 같이 alertController 를 만들었다.  
+아래와 같이 title 에 적용할 attributedString 을 만들어준다. 
+
+```swift
+let title = "title"
+let attrTitle = NSMutableAttributedString(attributedString: NSAttributedString(string: title))
+attrTitle.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13), range: NSRange(location: 0, length: title.count))
+```
+
+만든 attributedString 를 alertController 에 적용해준다.  
+```swift
+alertController.setValue(attrTitle, forKey: "attributedTitle")
+```
+
+message 영역은 아래와 같이 적용해준다. 
+
+```swift
+alertController.setValue(messageAttr, forKey: "attributedMessage")
+```
+
+UIActionController 내에 들어가는 UIAlertAction 에서 checked 형식은 아래와 같이 설정해줄 수 있다. ( 텍스트 컬러 추가 ) 
+
+```swift
+let action = UIAlertAction(title: title, style: .default, handler: {(action: UIAlertAction) -> Void in
+	actionHandler(index, title)
+})
+            
+if let value = selectedValue, value == title {
+	action.setValue(true, forKey: "checked")
+}
+
+action.setValue(UIColor.point(), forKey: "titleTextColor")
+alertController.addAction(action)
+```
+
