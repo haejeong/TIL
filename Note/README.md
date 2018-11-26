@@ -120,3 +120,18 @@ action.setValue(UIColor.point(), forKey: "titleTextColor")
 alertController.addAction(action)
 ```
 
+## Xcode Asset 에서 stretch 사용하는 방법
+
+아래와 같은 이미지의 가운데 부분만 양쪽으로 늘리고 싶을 때 아래와 같이 설정을 해준다.  
+![](slicing_001.png)
+
+늘리려는 이미지를 선택 한 후 오른쪽 inspector 에서 slicing 을 찾는다.  
+
+왼쪽 오른쪽 방향으로 늘리고 싶을 때 Horizontal,  
+위 아래 방향으로 늘리고 싶을 때 Vertical,  
+모든 방향으로 늘릴 때 Horizontal and Vertical 을 사용한다.  
+![](slicing_002.png)
+
+위의 이미지는 1x 짜리 이미지가 width 가 65 일 때 가운데 1px 만 남겨두고 양쪽을 늘리고 싶다면 아래와 같이 설정한다.  
+![](slicing_003.png)
+
