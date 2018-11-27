@@ -135,3 +135,61 @@ alertController.addAction(action)
 위의 이미지는 1x 짜리 이미지가 width 가 65 일 때 가운데 1px 만 남겨두고 양쪽을 늘리고 싶다면 아래와 같이 설정한다.  
 ![](slicing_003.png)
 
+
+## PopoverViewController 의 BackgroundView 수정하기 !!! 
+
+`popoverViewController`의 backgroundview 를 수정하기 위해서 `UIPopoverBackgroundView`를 상속받은 뷰를 만들어준다. 
+
+아래 `PopoverBackgroundView` 처럼 UIPopoverBackgroundView 의 Property와 function 들을 모두 `override` 해주었다. 
+
+```swift
+class PopoverBackgroundView: UIPopoverBackgroundView {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.layer.shadowColor = UIColor.clear.cgColor
+        self.layer.shadowOpacity = 0.1
+        self.layer.shadowOffset = CGSize.zero
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override static func contentViewInsets() -> UIEdgeInsets {
+        return UIEdgeInsetsMake(6, 4, 6, 4)
+    }
+    
+    override static func arrowHeight() -> CGFloat {
+        return 0
+    }
+    
+    override var arrowDirection: UIPopoverArrowDirection {
+        get { 
+        	  return UIPopoverArrowDirection.down 
+        }
+        set {
+            setNeedsLayout()
+        }
+    }
+    
+    override var arrowOffset: CGFloat {
+        get { 
+        	  return 0 
+        }
+        set {
+            setNeedsLayout()
+        }
+    }
+    
+    override class var wantsDefaultContentAppearance : Bool {
+        return false
+    }
+}
+```
+
+위의 custom popover backgrouncview 를 사용하기 위해선 popoverview 를 띄울 때 아래와 같이 수정해준다. 
+
+```swift
+selectedAddressViewController.popoverPresentationController?.popoverBackgroundViewClass = PopoverBackgroundView.self
+```
