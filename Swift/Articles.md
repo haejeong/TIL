@@ -90,3 +90,28 @@ key-value observing 을 설정한 Object들은 이들의 Observer 에게 프로�
 observed.updateDate() // Triggers the observer's change handler.
 // Prints "myDate changed from: 1970-01-01 00:00:00 +0000, updated to: 2038-01-19 03:14:08 +0000"
 ```
+
+## Adopting Common Protocols
+
+커스텀 타입을 사용하여 데이터를 모델링할 때 두 값이 동일한지 또는 다른지 또는 특정 값이 값 목록에 포함되어 있는지 확인해야 하는 경우가 많다. 이 기능은 값을 집합에 저장하거나 Dictionary의 키로 사용하는 기능뿐만 아니라 관련된 두 가지 표준 라이브러리 프로토콜인 Equible 및 Hashable로 관리한다. 
+
+- 등호 (==) 와 같지 않음 (!=) 연산자를 사용하여 등가 유형의 인스턴스를 비교할 수 있다. 
+- 해시 가능한 유형의 인스턴스는 값을 수학적으로 Integer 로 줄일 수 있고, 이 값은 Sets, Dicationary 를 이용하여 검색 속도를 일관되게 높일 수 있다. 
+
+문자열, 정수, 부동 소수점 값, bool 값, 집합을 포함하여 많은 표준 라이브러리 유형은 동등하고 해시 가능한 형식입니다. 다음 예에서 == 비교와 contains(_:) 메서드 호출은 문자열과 정수가 동일하다는 점에 따라 달라집니다.
+
+```swift
+if username == "Arturo" {
+    print("Hi, Arturo!")
+}
+
+let favoriteNumbers = [4, 7, 8, 9]
+if favoriteNumbers.contains(todaysDate.day) {
+    print("It's a good day today!")
+}
+```
+
+Equatable과 Hashable 프로토콜을 준수한다는 것은 간단하며 Swift에서 자신의 유형을 더 쉽게 사용할 수 있게 합니다. 모든 사용자 정의 모델 유형이 일치하는 것이 좋다. 
+
+
+
