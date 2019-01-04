@@ -193,3 +193,37 @@ class PopoverBackgroundView: UIPopoverBackgroundView {
 ```swift
 selectedAddressViewController.popoverPresentationController?.popoverBackgroundViewClass = PopoverBackgroundView.self
 ```
+
+
+## UITextField 한글 입력 시 텍스트 조합이 잘못되는 경우
+
+UITextField에 한글 상태로 키보드 입력 시 한글 조합이 잘못되어,  
+`shouldChangeCharactersIn` 에서 원하는 updatedText 을 받을 수 없어 처리 방법을 확인하였다. 
+
+
+기존 코드 
+```swift
+func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    if string == "\n"  {
+        return false
+    }
+    
+    if let text = textField.text,
+        let textRange = Range(range, in: text) {
+        let updatedText = text.replacingCharacters(in: textRange, with: string)
+
+        delegate?.didChangeTextField(string: updatedText, textField: textField, cell: self)
+    }
+    return true
+}
+```
+
+UITextField 에 .editingChanged 이벤트를 추가하여 값이 바뀐 후의 텍스트 값을 가져오도록 한다. 
+```swift
+addressInputField.addTarget(self, action: #selector(textChanged(textField:)), for: .editingChanged)
+
+@objc func textChanged(textField: DMTextField) {
+    delegate?.didChangeTextField(string: textField.text ?? "", textField: textField, cell: self)
+}
+```
+
